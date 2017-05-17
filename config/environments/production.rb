@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # no need to actually be private for the CC engine
+  config.private_paperclip_path = "#{Rails.root}/public/paperclip/:class/:attachment/:id_partition/:style/:filename"
 end

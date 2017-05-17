@@ -4,6 +4,7 @@ gem 'rails', '4.2.8'
 
 # database
 gem 'pg', '~> 0.15'
+gem 'paperclip'
 
 group :development, :test do
 end

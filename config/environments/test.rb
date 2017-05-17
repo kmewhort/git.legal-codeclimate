@@ -39,4 +39,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # no need to actually be private for the CC engine
+  config.private_paperclip_path = "#{Rails.root}/public/paperclip/:class/:attachment/:id_partition/:style/:filename"
 end
