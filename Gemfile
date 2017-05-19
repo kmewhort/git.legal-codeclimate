@@ -4,7 +4,12 @@ gem 'rails', '4.2.8'
 
 # database
 gem 'pg', '~> 0.15'
+
+# files
 gem 'paperclip'
+
+# Code infrastructure
+gem 'virtus'
 
 group :development, :test do
 end
@@ -12,5 +17,11 @@ end
 group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+group :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 
