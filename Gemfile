@@ -2,14 +2,15 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.8'
 
-# database
-gem 'pg', '~> 0.15'
-
 # files
 gem 'paperclip'
 
 # Code infrastructure
 gem 'virtus'
+
+# database
+gem 'sqlite3'
+gem 'pg', '~> 0.15' # postgresql database for importing from git.legal core
 
 group :development, :test do
 end

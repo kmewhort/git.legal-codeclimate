@@ -1,22 +1,20 @@
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: sqlite3
+  database: tmp/development.sqlite3
   pool: 5
 
 development:
   <<: *default
-  database: git_legal-codeclimate_development
-
-git_legal_development:
-  <<: *default
-  database: git_legal_development
 
 test:
   <<: *default
-  database: git_legal-codeclimate_test
+  database: tmp/test.sqlite3
 
 production:
   <<: *default
-  database: git_legal-codeclimate_production
-  username: git_legal-codeclimate
-  password: <%= ENV['GIT_LEGAL-CODECLIMATE_DATABASE_PASSWORD'] %>
+  database: db/production.sqlite3
+
+# git.legal core databases
+git_legal_development:
+  adapter: postgresql
+  database: git_legal_development

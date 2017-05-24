@@ -20,7 +20,7 @@ class InitialDb < ActiveRecord::Migration
       t.string  "source"
       t.boolean "approved_by_policy"
       t.string  "found_in"
-      t.jsonb   "package_metadata"
+      t.string  "package_metadata"
       t.boolean "licenses_recognized"
     end
 
@@ -109,7 +109,7 @@ class InitialDb < ActiveRecord::Migration
       t.string  "language"
       t.boolean "active"
       t.string  "github_id"
-      t.jsonb   "github_data"
+      t.string  "github_data"
       t.string  "parent_name"
       t.boolean "system"
     end

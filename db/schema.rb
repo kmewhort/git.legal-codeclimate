@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20170516235949) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "branches", force: :cascade do |t|
     t.integer "project_id"
     t.string  "name"
@@ -32,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.string  "copyleft_engages_on"
   end
 
-  add_index "copyleft_clauses", ["license_type_id"], name: "index_copyleft_clauses_on_license_type_id", using: :btree
+  add_index "copyleft_clauses", ["license_type_id"], name: "index_copyleft_clauses_on_license_type_id"
 
   create_table "libraries", force: :cascade do |t|
     t.string  "type"
@@ -44,12 +41,12 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.string  "source"
     t.boolean "approved_by_policy"
     t.string  "found_in"
-    t.jsonb   "package_metadata"
+    t.string  "package_metadata"
     t.boolean "licenses_recognized"
   end
 
-  add_index "libraries", ["branch_id"], name: "index_libraries_on_branch_id", using: :btree
-  add_index "libraries", ["type"], name: "index_libraries_on_type", using: :btree
+  add_index "libraries", ["branch_id"], name: "index_libraries_on_branch_id"
+  add_index "libraries", ["type"], name: "index_libraries_on_type"
 
   create_table "library_dependents", force: :cascade do |t|
     t.string "parent_library_id"
@@ -60,8 +57,8 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.string   "title"
     t.float    "version"
     t.string   "identifier"
-    t.string   "identifiers",                            array: true
-    t.string   "searchable_identifiers",                 array: true
+    t.string   "identifiers"
+    t.string   "searchable_identifiers"
     t.boolean  "unverified",             default: true
     t.boolean  "domain_content"
     t.boolean  "domain_data"
@@ -82,16 +79,16 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.boolean  "confirmed",              default: false
   end
 
-  add_index "license_types", ["identifier"], name: "index_license_types_on_identifier", using: :btree
-  add_index "license_types", ["identifiers"], name: "index_license_types_on_identifiers", using: :btree
-  add_index "license_types", ["searchable_identifiers"], name: "index_license_types_on_searchable_identifiers", using: :btree
+  add_index "license_types", ["identifier"], name: "index_license_types_on_identifier"
+  add_index "license_types", ["identifiers"], name: "index_license_types_on_identifiers"
+  add_index "license_types", ["searchable_identifiers"], name: "index_license_types_on_searchable_identifiers"
 
   create_table "licenses", force: :cascade do |t|
     t.integer  "library_id"
     t.integer  "license_type_id"
     t.string   "referencer_type"
     t.string   "referencer_id"
-    t.string   "authors",                                  array: true
+    t.string   "authors"
     t.boolean  "unknown_version"
     t.boolean  "from_more_recent_library"
     t.string   "text_file_name"
@@ -101,8 +98,8 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.boolean  "temporary",                default: false
   end
 
-  add_index "licenses", ["library_id"], name: "index_licenses_on_library_id", using: :btree
-  add_index "licenses", ["license_type_id"], name: "index_licenses_on_license_type_id", using: :btree
+  add_index "licenses", ["library_id"], name: "index_licenses_on_library_id"
+  add_index "licenses", ["license_type_id"], name: "index_licenses_on_license_type_id"
 
   create_table "obligations", force: :cascade do |t|
     t.integer "license_type_id"
@@ -112,7 +109,7 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.boolean "obligation_notice"
   end
 
-  add_index "obligations", ["license_type_id"], name: "index_obligations_on_license_type_id", using: :btree
+  add_index "obligations", ["license_type_id"], name: "index_obligations_on_license_type_id"
 
   create_table "policies", force: :cascade do |t|
     t.integer "project_id"
@@ -123,7 +120,7 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.boolean "sublicenses_comply",    default: true
   end
 
-  add_index "policies", ["project_id"], name: "index_policies_on_project_id", using: :btree
+  add_index "policies", ["project_id"], name: "index_policies_on_project_id"
 
   create_table "projects", force: :cascade do |t|
     t.integer "project_owner_id"
@@ -133,13 +130,13 @@ ActiveRecord::Schema.define(version: 20170516235949) do
     t.string  "language"
     t.boolean "active"
     t.string  "github_id"
-    t.jsonb   "github_data"
+    t.string  "github_data"
     t.string  "parent_name"
     t.boolean "system"
   end
 
-  add_index "projects", ["active"], name: "index_projects_on_active", using: :btree
-  add_index "projects", ["github_id"], name: "index_projects_on_github_id", using: :btree
-  add_index "projects", ["project_owner_type", "project_owner_id"], name: "index_projects_on_project_owner_type_and_project_owner_id", using: :btree
+  add_index "projects", ["active"], name: "index_projects_on_active"
+  add_index "projects", ["github_id"], name: "index_projects_on_github_id"
+  add_index "projects", ["project_owner_type", "project_owner_id"], name: "index_projects_on_project_owner_type_and_project_owner_id"
 
 end
