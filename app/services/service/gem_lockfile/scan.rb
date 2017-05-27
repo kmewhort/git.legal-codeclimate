@@ -6,17 +6,29 @@ class Service::GemLockfile::Scan < ::MicroService
       library = Library.where(name: spec.name, version: spec.version.to_s).first
 
       if library.nil?
-        unknown_lib = Library.new(name: spec.name, version: spec.version.to_s)
-        Service::CodeClimate::ReportIssue.call(issue: :library_not_found, library: unknown_lib, file: 'Gemfile.lock', line_number: line_number)
+        report_library_not_found(spec.name, spec.version.to_s, line_number) unless policy.allow_unknown_libraries
       elsif library.licenses.nil?
-        Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: library, file: 'Gemfile.lock', line_number: line_number)
+        report_license_not_found(library, line_number)
       elsif licenses_within_policy?(library)
-        Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: library, file: 'Gemfile.lock', line_number: line_number)
+        report_non_compliant(library, line_number)
       end
     end
   end
 
   private
+  def report_library_not_found(name, version, line_number)
+    unknown_lib = Library.new(name: name, version: version)
+    Service::CodeClimate::ReportIssue.call(issue: :library_not_found, library: unknown_lib, file: 'Gemfile.lock', line_number: line_number)
+  end
+
+  def report_license_not_found(library, line_number)
+    Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: library, file: 'Gemfile.lock', line_number: line_number)
+  end
+
+  def report_non_compliant(library, line_number)
+    Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: library, file: 'Gemfile.lock', line_number: line_number)
+  end
+
   def licenses_within_policy?(library)
     Service::Approvals::CheckPolicyApproval(
       policy: policy,

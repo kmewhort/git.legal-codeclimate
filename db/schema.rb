@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170516235949) do
+ActiveRecord::Schema.define(version: 20170527191231) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "project_id"
@@ -113,11 +113,12 @@ ActiveRecord::Schema.define(version: 20170516235949) do
 
   create_table "policies", force: :cascade do |t|
     t.integer "project_id"
-    t.boolean "allow_affero_copyleft", default: false
-    t.boolean "allow_strong_copyleft", default: false
-    t.boolean "allow_weak_copyleft",   default: true
-    t.boolean "allow_permissive",      default: true
-    t.boolean "sublicenses_comply",    default: true
+    t.boolean "allow_affero_copyleft",   default: false
+    t.boolean "allow_strong_copyleft",   default: false
+    t.boolean "allow_weak_copyleft",     default: true
+    t.boolean "allow_permissive",        default: true
+    t.boolean "sublicenses_comply",      default: true
+    t.boolean "allow_unknown_libraries", default: false
   end
 
   add_index "policies", ["project_id"], name: "index_policies_on_project_id"
