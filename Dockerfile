@@ -1,5 +1,7 @@
 FROM ruby:2.4-alpine
 
+LABEL maintainer "Kent Mewhort <kent@git.legal>"
+
 RUN apk update && \
     apk add --no-cache \
     build-base \
@@ -11,6 +13,7 @@ RUN apk update && \
     postgresql-client \
     sqlite-dev
 
+COPY engine.json /
 
 WORKDIR /usr/src/app
 COPY Gemfile /usr/src/app/

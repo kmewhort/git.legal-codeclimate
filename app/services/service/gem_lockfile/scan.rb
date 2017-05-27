@@ -3,10 +3,15 @@ class Service::GemLockfile::Scan < ::MicroService
 
   def call
     specs_by_line_number.each do |line_number, spec|
-      library = Library.where(name: spec.name, version: spec.version)
+      library = Library.where(name: spec.name, version: spec.version.to_s).first
 
-      unless licenses_within_policy?(library)
-        Service::CodeClimate::ReportIssue.call(library: library, line_number: line_number)
+      if library.nil?
+        unknown_lib = Library.new(name: spec.name, version: spec.version.to_s)
+        Service::CodeClimate::ReportIssue.call(issue: :library_not_found, library: unknown_lib, file: 'Gemfile.lock', line_number: line_number)
+      elsif library.licenses.nil?
+        Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: library, file: 'Gemfile.lock', line_number: line_number)
+      elsif licenses_within_policy?(library)
+        Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: library, file: 'Gemfile.lock', line_number: line_number)
       end
     end
   end

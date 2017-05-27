@@ -1,8 +1,11 @@
 image:
-	docker build -t kmewhort/git.legal-codeclimate .
+	docker build -t codeclimate/codeclimate-git.legal .
 
 test: image
-	docker run --rm kmewhort/git.legal-codeclimate sh -c 'cd /usr/src/app && bundle exec rspec'
+	docker run --rm codeclimate/codeclimate-git.legal sh -c 'cd /usr/src/app && bundle exec rspec'
 
 run: image
-	docker run kmewhort/git.legal-codeclimate
+	docker run codeclimate/codeclimate-git.legal
+
+run_on_self: image
+	codeclimate analyze --dev

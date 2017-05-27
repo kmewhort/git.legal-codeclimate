@@ -1,0 +1,11 @@
+{
+  "name": "git.legal",
+  "description": "git.legal scans your libraries and checks their licenses against your open source licensing policy"
+  "maintainer": {
+    "name": "Kent Mewhort",
+    "email": "kent@git.legal"
+  },
+  "languages" : ["Ruby"], // more to come
+  "version": "0.1",
+  "spec_version": "0.0.1"
+}

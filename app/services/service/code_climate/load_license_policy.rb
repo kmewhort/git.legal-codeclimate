@@ -1,4 +1,4 @@
-class Service::CodeClimate::LoadLicensePolicy
+class Service::CodeClimate::LoadLicensePolicy < ::MicroService
   CODECLIMATE_CONFIG_FILE_PATH = '/config.json'
 
   def call
