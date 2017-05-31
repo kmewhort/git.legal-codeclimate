@@ -21,5 +21,5 @@
 #  index_libraries_on_type       (type)
 #
 
-class GemLibrary < Library
+class JsLibrary < Library
 end

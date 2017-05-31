@@ -12,7 +12,6 @@
 #  domain_content         :boolean
 #  domain_data            :boolean
 #  domain_software        :boolean
-#  maintainer             :boolean
 #  maintainer_type        :string
 #  url                    :string
 #  created_at             :datetime
@@ -25,6 +24,8 @@
 #  text_content_type      :string
 #  text_file_size         :integer
 #  text_updated_at        :datetime
+#  maintainer             :string
+#  confirmed              :boolean          default(FALSE)
 #
 # Indexes
 #

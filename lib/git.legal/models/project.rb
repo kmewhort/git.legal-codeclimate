@@ -12,6 +12,7 @@
 #  github_id          :string
 #  github_data        :jsonb
 #  parent_name        :string
+#  system             :boolean
 #
 # Indexes
 #
