@@ -1,0 +1,16 @@
+source 'https://rubygems.org'
+
+# BSD 3-clause
+gem 'sqlite3'
+
+# MIT, requires Prawn under GPL
+gem 'thinreports'
+
+# GPL-2
+gem 'colorize'
+
+# LGPL-3
+gem 'origami'
+
+# AGPL
+gem 'nuggets'

@@ -40,7 +40,7 @@ namespace :git_legal do
         new_object.send :attributes=, old_attrs
         new_object.id = old_object.id
 
-        new_object.save!(validate: false)
+        new_object.save(validate: false)
       }
 
       # flip back to the old db

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Service::GemLockfile::Parse do
-  let(:lockfile_path) { Rails.root.join('spec','fixtures','Gemfile.lock') }
+  let(:lockfile_path) { Rails.root.join('spec','fixtures','gemfile_lock','Gemfile.lock') }
   let(:lockfile_contents) { IO.read lockfile_path }
 
   subject { Service::GemLockfile::Parse.call(lockfile_contents) }
