@@ -18,3 +18,12 @@ production:
 git_legal_development:
   adapter: postgresql
   database: git_legal_development
+
+git_legal_production:
+  adapter: postgresql
+  encoding: unicode
+  database: production
+  username: gitlegal
+  password: <%= ENV['GIT_LEGAL_DB_PASS'] =%>
+  host: production.cutu6pliwl23.us-west-2.rds.amazonaws.com
+  port: 5432
