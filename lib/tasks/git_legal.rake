@@ -65,7 +65,7 @@ namespace :git_legal do
 
     LicenseType.skip_callback :save, :before, :generate_searchable_identifiers
     restore_objects LicenseType.where(id: license_type_ids), source_db, target_db
-    restore_objects libraries, source_db, target_db
+    restore_objects licenses, source_db, target_db
 
     restore_objects Obligation.where(license_type_id: license_type_ids), source_db, target_db
     restore_objects CopyleftClause.where(license_type_id: license_type_ids), source_db, target_db
