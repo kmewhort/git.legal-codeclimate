@@ -22,7 +22,9 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   def non_compliant_data
     base_data.merge({
       "check_name": "Compatibility/Non-compliant license",
-      "description": "`#{library_name}`s falls under non-compliant licenses: `#{license_names}`"
+      "description": "`#{library_name}`s falls under \
+                      #{license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'}:\
+                      `#{license_names.to_sentence}`"
     })
   end
 
@@ -55,8 +57,8 @@ class Service::CodeClimate::ReportIssue < ::MicroService
     }
   end
 
-  def license_name
-    library.licenses.map {|license| license.license_type.identifier}.to_sentence
+  def license_names
+    library.licenses.map {|license| license.license_type.identifier}
   end
 
   def library_name

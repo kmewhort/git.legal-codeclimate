@@ -24,6 +24,6 @@ git_legal_production:
   encoding: unicode
   database: production
   username: gitlegal
-  password: <%= ENV['GIT_LEGAL_DB_PASS'] =%>
+  password: <%= ENV['GIT_LEGAL_DB_PASS'] %>
   host: production.cutu6pliwl23.us-west-2.rds.amazonaws.com
   port: 5432
