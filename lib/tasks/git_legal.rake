@@ -35,10 +35,12 @@ namespace :git_legal do
 
       total = objs.count
       puts "Loading #{objs.first.class.to_s} table..."
+      STDOUT.flush
 
       i = 1
       objs.map {|old_object|
         puts "#{i} of #{total}" if i % 1000 == 0
+        STDOUT.flush
 
         old_attrs = old_object.attributes.reject {|a| a == 'id'}
 

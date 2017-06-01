@@ -11,5 +11,5 @@ run_on_self_html: image
 	codeclimate analyze --dev -f html > tmp/run_on_self.html && open tmp/run_on_self.html
 
 production_db:
-	bundle exec rake git_legal:refresh_db[git_legal_production,production] > log/production_db_refresh.lo
+	bundle exec rake git_legal:refresh_db[git_legal_production,production]
 
