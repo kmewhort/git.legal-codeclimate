@@ -40,7 +40,7 @@ namespace :git_legal do
         new_object.send :attributes=, old_attrs
         new_object.id = old_object.id
 
-        new_object.save(validate: false)
+        new_object.save!(validate: false)
       }
 
       # flip back to the old db
@@ -65,9 +65,9 @@ namespace :git_legal do
 
     LicenseType.skip_callback :save, :before, :generate_searchable_identifiers
     restore_objects LicenseType.where(id: license_type_ids), source_db, target_db
-    restore_objects licenses, source_db, target_db
-
     restore_objects Obligation.where(license_type_id: license_type_ids), source_db, target_db
     restore_objects CopyleftClause.where(license_type_id: license_type_ids), source_db, target_db
+
+    restore_objects licenses, source_db, target_db
   end
 end
