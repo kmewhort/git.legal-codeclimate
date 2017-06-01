@@ -33,7 +33,12 @@ namespace :git_legal do
       # delete any existing objects
       objs.first.class.delete_all
 
+      total = obs.count
+      puts "Loading #{objs.first.class.to_s} table..."
+      i = 1
       objs.map {|old_object|
+        puts "#{i} of #{total}" if i % 1000 == 0
+
         old_attrs = old_object.attributes.reject {|a| a == 'id'}
 
         new_object = model.new
@@ -41,6 +46,8 @@ namespace :git_legal do
         new_object.id = old_object.id
 
         new_object.save!(validate: false)
+
+        i += 1
       }
 
       # flip back to the old db
@@ -48,6 +55,7 @@ namespace :git_legal do
     end
 
     ActiveRecord::Base.establish_connection source_db
+
     projects = Project.where(system: true)
     restore_objects projects, source_db, target_db
 
