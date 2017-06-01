@@ -1,6 +1,7 @@
 class Service::AnalyzeLibrary < ::MicroService
   attribute :name
   attribute :version
+  attribute :type
   attribute :file
   attribute :line_number
   attribute :version_must_match, Boolean, default: true
@@ -18,10 +19,10 @@ class Service::AnalyzeLibrary < ::MicroService
   private
   def matching_library
     @matching_library ||= begin
-      if version_must_match
-        Library.where(name: name, version: version).first
+      if version_must_match && !version.blank?
+        Library.where(name: name, type: type, version: version).first
       else
-        Library.where(name: name).order(version: :desc).first
+        Library.where(name: name, type: type).order(version: :desc).first
       end
     end
   end

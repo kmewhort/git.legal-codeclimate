@@ -1,6 +1,7 @@
 class Service::GemLockfile::Parse < Bundler::LockfileParser
   attr_accessor :specs_by_line
 
+  # turn bundler's parser into a service (with some overrides to get the line number)
   def self.call(lockfile)
     self.new(lockfile).specs_by_line
   end

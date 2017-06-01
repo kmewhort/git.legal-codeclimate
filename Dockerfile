@@ -9,9 +9,10 @@ RUN apk update && \
     libxslt-dev \
     tzdata \
     sqlite \
+    sqlite-dev \
     postgresql-dev \
     postgresql-client \
-    sqlite-dev
+    nodejs
 
 COPY engine.json /
 

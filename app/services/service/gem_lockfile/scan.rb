@@ -5,6 +5,8 @@ class Service::GemLockfile::Scan < ::MicroService
     specs_by_line_number.each do |line_number, spec|
       Service::AnalyzeLibrary.call(
         name: spec.name,
+        version: spec.version.to_s,
+        type: 'GemLibrary',
         file: 'Gemfile.lock',
         line_number: line_number,
         # only the bootstrap scan of the most recent version of each library has completed, so

@@ -38,7 +38,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   def license_not_found_data
     base_data.merge({
       "check_name": "Compatibility/No licenses",
-      "description": "No licenses found for `#{library_name}`. Either the library reports the licenses is specified in an unsupported format, or the library is unlicensed."
+      "description": "No licenses found for `#{library_name}`. Either the library reports the licenses in an unsupported format, or the library is unlicensed."
     })
   end
 
