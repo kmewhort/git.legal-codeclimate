@@ -33,8 +33,9 @@ namespace :git_legal do
       # delete any existing objects
       objs.first.class.delete_all
 
-      total = obs.count
+      total = objs.count
       puts "Loading #{objs.first.class.to_s} table..."
+      
       i = 1
       objs.map {|old_object|
         puts "#{i} of #{total}" if i % 1000 == 0
