@@ -32,4 +32,6 @@ USER app
 VOLUME /code
 WORKDIR /code
 
+ENV RAILS_ENV="production"
+
 CMD ["/usr/src/app/bin/git-legal-cc-scan"]

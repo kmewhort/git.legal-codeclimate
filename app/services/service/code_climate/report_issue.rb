@@ -22,9 +22,9 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   def non_compliant_data
     base_data.merge({
       "check_name": "Compatibility/Non-compliant license",
-      "description": "`#{library_name}`s falls under \
-                      #{license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'}:\
-                      `#{license_names.to_sentence}`"
+      "description": "Library `#{library_name}` is licensed under #{
+                       license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
+                       }: `#{license_types.count}`"
     })
   end
 
@@ -38,7 +38,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   def license_not_found_data
     base_data.merge({
       "check_name": "Compatibility/No licenses",
-      "description": "No licenses found for `#{library_name}`. Either the license is specified in an unsupported format, or the library is unlicensed"
+      "description": "No licenses found for `#{library_name}`. Either the library reports the licenses is specified in an unsupported format, or the library is unlicensed."
     })
   end
 
@@ -58,7 +58,11 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   end
 
   def license_names
-    library.licenses.map {|license| license.license_type.identifier}
+    license_types.map(&:identifier)
+  end
+
+  def license_types
+    library.licenses.map(&:license_type).uniq
   end
 
   def library_name
