@@ -11,6 +11,7 @@ gem 'virtus'
 # database
 gem 'sqlite3'
 gem 'pg', '~> 0.15' # postgresql database for importing from git.legal core
+gem 'yaml_db'
 
 group :development, :test do
 end

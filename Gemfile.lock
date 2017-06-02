@@ -145,6 +145,9 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
+    yaml_db (0.6.0)
+      rails (>= 3.0, < 5.2)
+      rake (>= 0.8.7)
 
 PLATFORMS
   ruby
@@ -159,6 +162,7 @@ DEPENDENCIES
   spring
   sqlite3
   virtus
+  yaml_db
 
 BUNDLED WITH
    1.15.0

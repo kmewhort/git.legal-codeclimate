@@ -18,6 +18,8 @@ namespace :git_legal do
   end
 
   task :refresh_db, [:from_db, :to_db] => [:environment] do |task, args|
+    require 'yaml_db'
+
     source_db = args[:from_db] or raise 'Please specify the source and target databases'
     target_db = args[:to_db] or raise 'Please specify the source and target databases'
 
@@ -29,6 +31,10 @@ namespace :git_legal do
     # for copying from a cached copy to the new db
     def restore_objects(objs, source_db, target_db)
       return if objs.blank?
+
+      db_load_helper = YamlDb::SerializationHelper::Load
+      db_dump_helper = YamlDb::SerializationHelper::Dump
+
       objs = objs.to_a
       model = objs.first.class
 
@@ -43,19 +49,20 @@ namespace :git_legal do
       STDOUT.flush
 
       i = 1
-      objs.map {|old_object|
-        puts "#{i} of #{total}" if i % 1000 == 0
+      objs.each_slice(1000) {|old_objects|
+        puts "#{i*1000} of #{total}" if i % 1000 == 0
         STDOUT.flush
 
-        old_attrs = old_object.attributes.reject {|a| a == 'id'}
+        table_name = objs.first.class.table_name
+        columns = db_dump_helper.table_column_names(table_name)
 
-        new_object = model.new
-        new_object.send :attributes=, old_attrs
-        new_object.id = old_object.id
+        data = {}
+        data['columns'] = columns
+        data['records'] = old_objects.map do |old_object|
+          columns.map {|column| old_object['column']}
+        end
 
-        new_object.save!(validate: false)
-
-        i += 1
+        db_load_helper.load_table(table_name, data)
       }
 
       # flip back to the old db
