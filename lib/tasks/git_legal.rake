@@ -21,6 +21,11 @@ namespace :git_legal do
     source_db = args[:from_db] or raise 'Please specify the source and target databases'
     target_db = args[:to_db] or raise 'Please specify the source and target databases'
 
+    # this task runs for a long time...and somehow seems to get SIGHUP even with nohup?! ...so ignore.
+    Signal.trap('HUP') do
+      # no-op
+    end
+
     # for copying from a cached copy to the new db
     def restore_objects(objs, source_db, target_db)
       return if objs.blank?
