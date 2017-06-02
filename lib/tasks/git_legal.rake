@@ -48,7 +48,7 @@ namespace :git_legal do
       puts "Loading #{objs.first.class.to_s} table..."
       STDOUT.flush
 
-      i = 1
+      i = 0
       objs.each_slice(1000) {|old_objects|
         puts "#{i*1000} of #{total}"
         STDOUT.flush
@@ -63,6 +63,7 @@ namespace :git_legal do
         end
 
         db_load_helper.load_table(table_name, data)
+        i += 1
       }
 
       # flip back to the old db
