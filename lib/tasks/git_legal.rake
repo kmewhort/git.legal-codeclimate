@@ -50,7 +50,7 @@ namespace :git_legal do
 
       i = 1
       objs.each_slice(1000) {|old_objects|
-        puts "#{i*1000} of #{total}" if i % 1000 == 0
+        puts "#{i*1000} of #{total}"
         STDOUT.flush
 
         table_name = objs.first.class.table_name
