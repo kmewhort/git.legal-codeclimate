@@ -49,8 +49,8 @@ namespace :git_legal do
       STDOUT.flush
 
       i = 0
-      objs.each_slice(1000) {|old_objects|
-        puts "#{i*1000} of #{total}"
+      objs.each_slice(10000) {|old_objects|
+        puts "#{i*10000} of #{total}"
         STDOUT.flush
 
         table_name = objs.first.class.table_name
