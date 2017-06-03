@@ -29,7 +29,7 @@ namespace :git_legal do
     end
 
     # for copying from a cached copy to the new db
-    def restore_objects(objs, source_db, target_db)
+    def restore_objects(objs, source_db, target_db, delete_existing)
       return if objs.blank?
 
       db_load_helper = YamlDb::SerializationHelper::Load
@@ -42,7 +42,7 @@ namespace :git_legal do
       ActiveRecord::Base.establish_connection target_db
 
       # delete any existing objects
-      objs.first.class.delete_all
+      objs.first.class.delete_all if delete_existing
 
       table_name = objs.first.class.table_name
       columns = db_dump_helper.table_column_names(table_name)
@@ -50,10 +50,10 @@ namespace :git_legal do
       data = {}
       data['columns'] = columns
       data['records'] = objs.map do |old_object|
-        columns.map {|column| old_object['column']}
+        columns.map {|column| old_object[column]}
       end
 
-      db_load_helper.load_table(table_name, data)
+      db_load_helper.load_table(table_name, data, false)
 
       # flip back to the old db
       ActiveRecord::Base.establish_connection source_db
@@ -62,12 +62,12 @@ namespace :git_legal do
     ActiveRecord::Base.establish_connection source_db
 
     projects = Project.where(system: true)
-    restore_objects projects, source_db, target_db
+    restore_objects projects, source_db, target_db, true
 
-    restore_objects Policy.where(project_id: projects.pluck(:id)), source_db, target_db
+    restore_objects Policy.where(project_id: projects.pluck(:id)), source_db, target_db, true
 
     branches = Branch.where(project_id: projects.pluck(:id))
-    restore_objects branches, source_db, target_db
+    restore_objects branches, source_db, target_db, true
 
     created_license_type_ids = {}
     libraries = Library.where(branch_id: branches.pluck(:id))
@@ -76,9 +76,8 @@ namespace :git_legal do
     total = libraries.count
     libraries.find_in_batches(batch_size: 10000) do |libs|
       puts "Loading library #{i*10000} of #{total}"; STDOUT.flush
-      i+=1
 
-      restore_objects libs, source_db, target_db
+      restore_objects libs, source_db, target_db, i==0
 
       puts '...Querying licenses'; STDOUT.flush
       lib_ids = libs.map(&:id)
@@ -89,13 +88,15 @@ namespace :git_legal do
       license_type_ids = licenses.pluck(:license_type_id)
       uncreated_license_type_ids = license_type_ids.select {|ltid| !created_license_type_ids.has_key? ltid}
       LicenseType.skip_callback :save, :before, :generate_searchable_identifiers
-      restore_objects LicenseType.where(id: uncreated_license_type_ids), source_db, target_db
-      restore_objects Obligation.where(license_type_id: license_type_ids), source_db, target_db
-      restore_objects CopyleftClause.where(license_type_id: license_type_ids), source_db, target_db
+      restore_objects LicenseType.where(id: uncreated_license_type_ids), source_db, target_db, i==0
+      restore_objects Obligation.where(license_type_id: uncreated_license_type_ids), source_db, target_db, i==0
+      restore_objects CopyleftClause.where(license_type_id: uncreated_license_type_ids), source_db, target_db, i==0
       uncreated_license_type_ids.each {|ltid| created_license_type_ids[ltid] = true}
 
       puts '...Loading licenses'; STDOUT.flush
-      restore_objects licenses, source_db, target_db
+      restore_objects licenses, source_db, target_db, i==0
+
+      i+=1
     end
   end
 end

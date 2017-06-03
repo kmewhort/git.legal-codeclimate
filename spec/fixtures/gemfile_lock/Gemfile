@@ -14,3 +14,6 @@ gem 'origami'
 
 # AGPL
 gem 'nuggets'
+
+# unknown gem (not on rubygems)
+gem 'localgem_4525', path: './localgem_4525'

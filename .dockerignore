@@ -1,0 +1,6 @@
+/log
+/tmp
+/spec
+/db
+!/db/production.sqlite3
+!/db/schema.rb

@@ -7,10 +7,10 @@ describe Service::GemLockfile::Parse do
   subject { Service::GemLockfile::Parse.call(lockfile_contents) }
 
   it "finds the specs listed in the lockfile" do
-    expect(subject.count).to eq 48
+    expect(subject.count).to eq 9
   end
 
   it "finds the line number where a spec is reported" do
-    expect(subject[4].name).to eq 'actionmailer'
+    expect(subject[9].name).to eq 'colorize'
   end
 end

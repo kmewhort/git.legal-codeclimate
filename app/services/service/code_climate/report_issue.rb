@@ -24,7 +24,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
       "check_name": "Compatibility/Non-compliant license",
       "description": "Library `#{library_name}` is licensed under #{
                        license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
-                       }: `#{license_types.count}`"
+                       }: `#{license_names.to_sentence}`"
     })
   end
 
