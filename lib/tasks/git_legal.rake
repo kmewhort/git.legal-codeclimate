@@ -44,27 +44,16 @@ namespace :git_legal do
       # delete any existing objects
       objs.first.class.delete_all
 
-      total = objs.count
-      puts "Loading #{objs.first.class.to_s} table..."
-      STDOUT.flush
+      table_name = objs.first.class.table_name
+      columns = db_dump_helper.table_column_names(table_name)
 
-      i = 0
-      objs.each_slice(10000) {|old_objects|
-        puts "#{i*10000} of #{total}"
-        STDOUT.flush
+      data = {}
+      data['columns'] = columns
+      data['records'] = objs.map do |old_object|
+        columns.map {|column| old_object['column']}
+      end
 
-        table_name = objs.first.class.table_name
-        columns = db_dump_helper.table_column_names(table_name)
-
-        data = {}
-        data['columns'] = columns
-        data['records'] = old_objects.map do |old_object|
-          columns.map {|column| old_object['column']}
-        end
-
-        db_load_helper.load_table(table_name, data)
-        i += 1
-      }
+      db_load_helper.load_table(table_name, data)
 
       # flip back to the old db
       ActiveRecord::Base.establish_connection source_db
@@ -80,18 +69,33 @@ namespace :git_legal do
     branches = Branch.where(project_id: projects.pluck(:id))
     restore_objects branches, source_db, target_db
 
+    created_license_type_ids = {}
     libraries = Library.where(branch_id: branches.pluck(:id))
-    restore_objects libraries, source_db, target_db
 
-    licenses = libraries.map {|l| l.licenses}.flatten
-    # only pull license types tied to the licenses we pull in
-    license_type_ids = licenses.map {|l| l.license_type_id}.uniq
+    i = 0
+    total = libraries.count
+    libraries.find_in_batches(batch_size: 10000) do |libs|
+      puts "Loading library #{i*10000} of #{total}"; STDOUT.flush
+      i+=1
 
-    LicenseType.skip_callback :save, :before, :generate_searchable_identifiers
-    restore_objects LicenseType.where(id: license_type_ids), source_db, target_db
-    restore_objects Obligation.where(license_type_id: license_type_ids), source_db, target_db
-    restore_objects CopyleftClause.where(license_type_id: license_type_ids), source_db, target_db
+      restore_objects libs, source_db, target_db
 
-    restore_objects licenses, source_db, target_db
+      puts '...Querying licenses'; STDOUT.flush
+      lib_ids = libs.map(&:id)
+      licenses = License.where(library_id: lib_ids)
+
+      # only pull license types tied to the licenses we pull in (and not already created)
+      puts '...Loading license types'; STDOUT.flush
+      license_type_ids = licenses.pluck(:license_type_id)
+      uncreated_license_type_ids = license_type_ids.select {|ltid| !created_license_type_ids.has_key? ltid}
+      LicenseType.skip_callback :save, :before, :generate_searchable_identifiers
+      restore_objects LicenseType.where(id: uncreated_license_type_ids), source_db, target_db
+      restore_objects Obligation.where(license_type_id: license_type_ids), source_db, target_db
+      restore_objects CopyleftClause.where(license_type_id: license_type_ids), source_db, target_db
+      uncreated_license_type_ids.each {|ltid| created_license_type_ids[ltid] = true}
+
+      puts '...Loading licenses'; STDOUT.flush
+      restore_objects licenses, source_db, target_db
+    end
   end
 end
