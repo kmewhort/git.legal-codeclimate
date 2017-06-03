@@ -25,7 +25,7 @@ RUN gem install bundler && \
     rm -fr /usr/share/ri
 
 RUN adduser -u 9000 -D app
-COPY . /usr/src/app
+#COPY . /usr/src/app
 RUN chown -R app:app /usr/src/app
 
 USER app
