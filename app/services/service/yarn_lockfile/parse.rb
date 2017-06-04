@@ -16,7 +16,7 @@ class Service::YarnLockfile::Parse < ::MicroService
   private
   def library_data
     # our yarn parser is in JS, as it re-uses the hand-written Yarn parser from the yarn library
-    json_result = `node lib/yarn_parser spec/fixtures/yarn_lock/yarn.lock #{lockfile_path}`
+    json_result = `node #{Rails.root.join('lib','yarn_parser')} #{lockfile_path}`
     JSON.parse json_result
   end
 
