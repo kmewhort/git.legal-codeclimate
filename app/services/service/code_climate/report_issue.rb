@@ -12,6 +12,8 @@ class Service::CodeClimate::ReportIssue < ::MicroService
         library_not_found_data
       when :license_not_found
         license_not_found_data
+      when :license_unrecognized
+        license_unrecognized_data
       else
         raise "Unknown issue type"
     end
@@ -23,8 +25,15 @@ class Service::CodeClimate::ReportIssue < ::MicroService
     base_data.merge({
       "check_name": "Compatibility/Non-compliant license",
       "description": "Library `#{library_name}` is licensed under #{
-                       license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
-                       }: `#{license_names.to_sentence}`"
+        license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
+      }: `#{license_names.to_sentence}`"
+    })
+  end
+
+  def license_unrecognized_data
+    base_data.merge({
+      "check_name": "Compatibility/Unrecognized license",
+      "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`"
     })
   end
 
@@ -58,7 +67,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   end
 
   def license_names
-    license_types.map(&:identifier)
+    license_types.map(&:full_title)
   end
 
   def license_types

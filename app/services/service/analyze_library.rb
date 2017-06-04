@@ -11,6 +11,8 @@ class Service::AnalyzeLibrary < ::MicroService
       report_library_not_found unless policy.allow_unknown_libraries
     elsif matching_library.licenses.blank?
       report_license_not_found
+    elsif licenses_unrecognized?
+      report_license_unrecognized
     elsif !licenses_within_policy?
       report_non_compliant
     end
@@ -22,8 +24,7 @@ class Service::AnalyzeLibrary < ::MicroService
       if version_must_match && !version.blank?
         Library.where(name: name, type: type, version: version).first
       else
-        # use the latest version that has actually specified a license
-        Library.where(name: name, type: type).order(version: :desc).to_a.find {|l| l.licenses.present?}
+        Library.where(name: name, type: type).order(version: :desc).first
       end
     end
   end
@@ -37,8 +38,16 @@ class Service::AnalyzeLibrary < ::MicroService
     Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: matching_library, file: file, line_number: line_number)
   end
 
+  def report_license_unrecognized
+    Service::CodeClimate::ReportIssue.call(issue: :license_unrecognized, library: matching_library, file: file, line_number: line_number)
+  end
+
   def report_non_compliant
     Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: matching_library, file: file, line_number: line_number)
+  end
+
+  def licenses_unrecognized?
+    license_types.all? {|lt| !lt.confirmed }
   end
 
   def licenses_within_policy?
@@ -49,8 +58,10 @@ class Service::AnalyzeLibrary < ::MicroService
   end
 
   def license_types
-    license_type_ids = matching_library.licenses.pluck(:license_type_id)
-    LicenseType.where(id: license_type_ids)
+    @license_types ||= begin
+      license_type_ids = matching_library.licenses.pluck(:license_type_id)
+      LicenseType.where(id: license_type_ids)
+    end
   end
 
   def policy
