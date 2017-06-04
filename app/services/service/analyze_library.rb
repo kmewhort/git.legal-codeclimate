@@ -22,7 +22,8 @@ class Service::AnalyzeLibrary < ::MicroService
       if version_must_match && !version.blank?
         Library.where(name: name, type: type, version: version).first
       else
-        Library.where(name: name, type: type).order(version: :desc).first
+        # use the latest version that has actually specified a license
+        Library.where(name: name, type: type).order(version: :desc).to_a.find {|l| l.licenses.present?}
       end
     end
   end
