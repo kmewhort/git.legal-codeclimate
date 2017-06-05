@@ -38,7 +38,7 @@ exclude "strong copyleft" and Affero licenses:
       allow_strong_copyleft:   false
       allow_weak_copyleft:     false
       allow_permissive:        true
-      allow_unknown_libraries: false
+      allow_unknown_libraries: true
 ```
 
 ## License
