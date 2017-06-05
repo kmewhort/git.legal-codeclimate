@@ -41,6 +41,12 @@ exclude "strong copyleft" and Affero licenses:
       allow_unknown_libraries: true
 ```
 
+## Building from Source
+
+You can create the docker image with: `make image`
+
+Once built, run the test suite from *outside* the docker container (end-to-end tests use the container you've just built): `rspec`
+
 ## License
 
 This project is available as open source under the terms of the
