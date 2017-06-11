@@ -11,6 +11,9 @@ gem 'virtus'
 # database
 gem 'sqlite3'
 
+# parsers
+gem 'gemnasium-parser'
+
 group :development, :test do
 end
 
