@@ -5,11 +5,12 @@ class Service::YarnLockfile::Parse < ::MicroService
     library_data.map do |lib_fullname, lib_data|
       lib_name, fuzzy_version = lib_fullname.split('@')
 
-      lib_data.with_indifferent_access.merge({
+      {
         name: lib_name,
-        line_number: find_line_number(lib_name)
-      })
-    end
+        version: lib_data['version'],
+        line: find_line_number(lib_name),
+      }
+    end.uniq
   end
 
   private

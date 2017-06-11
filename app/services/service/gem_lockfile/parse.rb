@@ -3,7 +3,7 @@ class Service::GemLockfile::Parse < Bundler::LockfileParser
 
   # turn bundler's parser into a service (with some overrides to get the line number)
   def self.call(lockfile)
-    self.new(lockfile).specs_by_line.map do |spec, line|
+    self.new(lockfile).specs_by_line.map do |line, spec|
       {
         name: spec.name,
         version: spec.version.to_s,

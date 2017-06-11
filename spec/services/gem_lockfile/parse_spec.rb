@@ -11,6 +11,7 @@ describe Service::GemLockfile::Parse do
   end
 
   it "finds the line number where a spec is reported" do
-    expect(subject[9].name).to eq 'colorize'
+    expect(subject[1][:name]).to eq 'colorize'
+    expect(subject[1][:line]).to eq 9
   end
 end
