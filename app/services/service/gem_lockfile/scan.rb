@@ -1,4 +1,4 @@
-class Service::GemLockfile::Scan < Service::ScanFileBase
+class Service::GemLockfile::Scan < Service::ScanManifestBase
   protected
   def library_identifiers
     Service::GemLockfile::Parse.call(file_contents)

@@ -1,4 +1,4 @@
-class Service::Scan < ::MicroService
+class Service::ScanProject < ::MicroService
   GEM_LOCKFILE_PATH = '/code/Gemfile.lock'
   GEMFILE_PATH = '/code/Gemfile'
   GEMSPEC_PATH = '/code/*.gemspec'

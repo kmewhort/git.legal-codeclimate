@@ -40,8 +40,8 @@ describe 'End to end' do
       expect(reported_issue_for('origami')).to eq nil
     end
 
-    it "reports issues for unknown libraries" do
-      expect(reported_issue_for('localgem_4525')['check_name']).to eq 'Compatibility/Unrecognized library'
+    it "does not report issues for unknown libraries" do
+      expect(reported_issue_for('localgem_4525')).to eq nil
     end
   end
 
@@ -62,7 +62,7 @@ describe 'End to end' do
     end
   end
 
-  context "config file allows unknown libraries" do
+  context "config file prohibits unknown libraries" do
     before do
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
@@ -70,12 +70,12 @@ describe 'End to end' do
           git.legal:
             enabled: true
             config:
-              allow_unknown_libraries: true
+              allow_unknown_libraries: false
       YML
     end
 
-    it "does not report issues for unknown libraries" do
-      expect(reported_issue_for('localgem_4525')).to eq nil
+    it "reports issues for unknown libraries" do
+      expect(reported_issue_for('localgem_4525')['check_name']).to eq 'Compatibility/Unrecognized library'
     end
   end
 end

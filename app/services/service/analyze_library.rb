@@ -1,15 +1,11 @@
 class Service::AnalyzeLibrary < ::MicroService
-  attribute :name
-  attribute :version
-  attribute :type
+  attribute :library
   attribute :file
   attribute :line_number
   attribute :version_must_match, Boolean, default: true
 
   def call
-    if matching_library.nil?
-      report_library_not_found unless policy.allow_unknown_libraries
-    elsif matching_library.licenses.blank?
+    if library.licenses.blank?
       report_license_not_found
     elsif licenses_unrecognized?
       report_license_unrecognized
@@ -19,31 +15,16 @@ class Service::AnalyzeLibrary < ::MicroService
   end
 
   private
-  def matching_library
-    @matching_library ||= begin
-      if version_must_match && !version.blank?
-        Library.where(name: name, type: type, version: version).first
-      else
-        Library.where(name: name, type: type).order(version: :desc).first
-      end
-    end
-  end
-
-  def report_library_not_found
-    unknown_lib = Library.new(name: name, version: version)
-    Service::CodeClimate::ReportIssue.call(issue: :library_not_found, library: unknown_lib, file: file, line_number: line_number)
-  end
-
   def report_license_not_found
-    Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: matching_library, file: file, line_number: line_number)
+    Service::CodeClimate::ReportIssue.call(issue: :license_not_found, library: library, file: file, line_number: line_number)
   end
 
   def report_license_unrecognized
-    Service::CodeClimate::ReportIssue.call(issue: :license_unrecognized, library: matching_library, file: file, line_number: line_number)
+    Service::CodeClimate::ReportIssue.call(issue: :license_unrecognized, library: library, file: file, line_number: line_number)
   end
 
   def report_non_compliant
-    Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: matching_library, file: file, line_number: line_number)
+    Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: library, file: file, line_number: line_number)
   end
 
   def licenses_unrecognized?
@@ -59,7 +40,7 @@ class Service::AnalyzeLibrary < ::MicroService
 
   def license_types
     @license_types ||= begin
-      license_type_ids = matching_library.licenses.pluck(:license_type_id)
+      license_type_ids = library.licenses.pluck(:license_type_id)
       LicenseType.where(id: license_type_ids)
     end
   end
