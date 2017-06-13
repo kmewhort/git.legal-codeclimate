@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe Service::Gemfile::Parse do
   let(:gemfile_path) { Rails.root.join('spec','fixtures','gemfile_lock','Gemfile') }
-  subject { Service::Gemfile::Scan.call(file_contents: file_contents) }
+  let(:file_contents) { IO.read(gemfile_path) }
+  subject { Service::Gemfile::Parse.call(file_contents: file_contents) }
 
   it "finds the gems listed in the Gemfile" do
     # looks like the Gemnasium parser doesn't capture "path" gems on the local drive...OK for now
