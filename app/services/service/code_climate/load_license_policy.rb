@@ -7,7 +7,11 @@ class Service::CodeClimate::LoadLicensePolicy < ::MicroService
 
   private
   def policy_hash
+    return {} unless File.exist? CODECLIMATE_CONFIG_FILE_PATH
+
     settings = JSON.parse IO.read(CODECLIMATE_CONFIG_FILE_PATH)
-    settings['config'] || {}
+    return {} unless settings['config'].present?
+
+    settings['config']
   end
 end
