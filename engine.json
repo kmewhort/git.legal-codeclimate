@@ -1,5 +1,5 @@
 {
-  "name": "git.legal",
+  "name": "git-legal",
   "description": "git.legal scans your libraries and checks their licenses against your open source licensing policy"
   "maintainer": {
     "name": "Kent Mewhort",

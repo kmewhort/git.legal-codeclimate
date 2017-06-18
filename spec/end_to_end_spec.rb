@@ -12,7 +12,7 @@ describe 'End to end' do
   end
 
   subject {
-    JSON.parse `cd #{tmp_code_dir} && codeclimate analyze --dev -f json -e git.legal`
+    JSON.parse `cd #{tmp_code_dir} && codeclimate analyze --dev -f json -e git-legal`
   }
 
   def reported_issue_for(library_name)
@@ -25,7 +25,7 @@ describe 'End to end' do
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
         engines:
-          git.legal:
+          git-legal:
             enabled: true
       YML
     end
@@ -50,7 +50,7 @@ describe 'End to end' do
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
         engines:
-          git.legal:
+          git-legal:
             enabled: true
             config:
               allow_weak_copyleft: false
@@ -67,7 +67,7 @@ describe 'End to end' do
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
         engines:
-          git.legal:
+          git-legal:
             enabled: true
             config:
               allow_unknown_libraries: false

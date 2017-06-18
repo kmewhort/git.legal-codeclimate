@@ -1,8 +1,8 @@
 image:
-	docker build -t codeclimate/codeclimate-git.legal .
+	docker build -t codeclimate/codeclimate-git-legal .
 
 run: image
-	docker run codeclimate/codeclimate-git.legal
+	docker run codeclimate/codeclimate-git-legal
 
 run_on_self: image
 	codeclimate analyze --dev

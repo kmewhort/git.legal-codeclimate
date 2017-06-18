@@ -16,7 +16,7 @@ soon!  For analysis supporting Bower, NPM, Go, Maven, javascript includes, pleas
 `.codeclimate.yml` file:
 
 ```
- git.legal:
+ git-legal:
     enabled: true
 ```
 
@@ -31,7 +31,7 @@ disallow for your project.  For example, the example below (which is the default
 exclude "strong copyleft" and Affero licenses:
 
 ```
- git.legal:
+ git-legal:
     enabled: true
     config:
       allow_affero_copyleft:   false
