@@ -13,12 +13,14 @@ class Service::ScanProject < ::MicroService
        Service::Gemspec::Scan.call(file_path: File.join(root, gemspec_file))
      end
 
-    # yarn not available until the registry scan is complete
-     #Service::YarnLockfile::Scan.call(lockfile_path: YARN_LOCKFILE_PATH) if File.exist? YARN_LOCKFILE_PATH
+     if file_found? YARN_LOCKFILE_PATH
+       Service::YarnLockfile::Scan.call(file_path: File.join(root, YARN_LOCKFILE_PATH))
+     end
    end
 
   private
   def file_found?(file)
+    return false if file.nil?
     File.exist?(File.join(root, file)) && file_included?(file)
   end
 
