@@ -17,9 +17,10 @@ namespace :git_legal do
     end
   end
 
-  task :refresh_db, [:from_db, :to_db] => [:environment] do |task, args|
+  task :refresh_db, [:project_name, :from_db, :to_db] => [:environment] do |task, args|
     require 'yaml_db'
 
+    project_name = args[:project_name] or raise 'Please specify the source project name'
     source_db = args[:from_db] or raise 'Please specify the source and target databases'
     target_db = args[:to_db] or raise 'Please specify the source and target databases'
 
@@ -61,7 +62,7 @@ namespace :git_legal do
 
     ActiveRecord::Base.establish_connection source_db
 
-    projects = Project.where(system: true)
+    projects = Project.where(name: project_name, system: true)
     restore_objects projects, source_db, target_db, true
 
     restore_objects Policy.where(project_id: projects.pluck(:id)), source_db, target_db, true

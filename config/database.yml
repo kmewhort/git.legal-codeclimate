@@ -8,11 +8,28 @@ development:
 
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: db/test_rubygems.sqlite3
+
+test_rubygems:
+  <<: *default
+  database: db/test_rubygems.sqlite3
+
+test_npm:
+  <<: *default
+  database: db/test_npm.sqlite3
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  # default to the rubygems db for the production environment
+  database: db/production_rubygems.sqlite3
+
+production_rubygems:
+  <<: *default
+  database: db/production_rubygems.sqlite3
+
+production_npm:
+  <<: *default
+  database: db/production_npm.sqlite3
 
 # git.legal core databases
 git_legal_development:

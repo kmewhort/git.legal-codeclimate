@@ -1,5 +1,6 @@
 class Service::Gemfile::Scan < Service::ScanManifestBase
   def call
+    ActiveRecord::Base.establish_connection "#{Rails.env}_rubygems".to_sym
     self.follow_dependencies = true
     super
   end
