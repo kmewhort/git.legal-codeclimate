@@ -2,7 +2,7 @@ log
 tmp
 spec
 db
-!db/production.sqlite3
+!db/production_*.sqlite3
 !db/schema.rb
 .git
 .idea

@@ -3,8 +3,8 @@ class Service::CodeClimate::GetEngineConfig < ::MicroService
 
   def call
     @@settings ||= begin
-      if File.exist? Service::ScanProject::CODECLIMATE_CONFIG_FILE_PATH
-        default_setttings.merge JSON.parse(IO.read(Service::ScanProject::CODECLIMATE_CONFIG_FILE_PATH))
+      if File.exist? CODECLIMATE_CONFIG_FILE_PATH
+        default_settings.merge JSON.parse(IO.read(CODECLIMATE_CONFIG_FILE_PATH))
       else
         default_settings
       end
