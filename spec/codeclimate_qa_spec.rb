@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Codeclimate QA', skip: true do
+describe 'Codeclimate QA' do
   let(:tmp_download_dir) { Dir.mktmpdir }
 
   describe 'Popular ruby repos' do
@@ -33,10 +33,16 @@ describe 'Codeclimate QA', skip: true do
           @tmp_code_dir = Dir.mktmpdir
           ENV['TMPDIR'] = orig_tmp_dir
           `mv #{tmp_download_dir}/* #{@tmp_code_dir}/`
+
+          IO.write "#{@tmp_code_dir}/.codeclimate.yml", <<~YML
+          ---
+          engines:
+            git-legal:
+              enabled: true
+          YML
         end
 
         it "executes successfully" do
-          `cd #{@tmp_code_dir} && codeclimate init`
           result = `cd #{@tmp_code_dir} && codeclimate analyze --dev -e git-legal`
 
           puts "------ Result for #{repo_name} ------"

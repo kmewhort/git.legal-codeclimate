@@ -1,3 +1,18 @@
-class Service::Gemspec::Parse < ::Service::Gemfile::Parse
-  # we can use the gymnasium gem here as well, so same implementation as Gemfile parse
+class Service::Gemspec::Parse < ::MicroService
+  attribute :file_contents
+
+  def call
+    parsed_dependencies.map do |dep|
+      {
+        name: dep.name,
+        version: nil, # don't currently handle requirements/fuzzy dependencies
+        line: dep.instance_variable_get(:@line)
+      }
+    end
+  end
+
+  private
+  def parsed_dependencies
+    Gemnasium::Parser.gemspec(file_contents).dependencies
+  end
 end

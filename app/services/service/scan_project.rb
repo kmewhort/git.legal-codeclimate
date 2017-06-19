@@ -31,7 +31,7 @@ class Service::ScanProject < ::MicroService
   def gemspec_file
     @gemspec_file ||= begin
       path = Dir[File.join(root, GEMSPEC_PATH)].first
-      path.present? ? path.sub(root) : nil
+      path.present? ? path.sub(root, '') : nil
     end
   end
 
