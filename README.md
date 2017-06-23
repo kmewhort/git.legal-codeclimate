@@ -5,8 +5,7 @@ based on policies that you configure.
 
 ## Supported languages and package managers
 
-The community edition of Git.legal currently only supports analysis of ruby libraries - but expect wider support *very*
-soon!  For analysis supporting Bower, NPM, Go, Maven, javascript includes, please try https://git.legal.
+The community edition of Git.legal currently supports analysis of Ruby (gem) libraries and JS (npm, yarn) libraries  - but expect wider support soon!  For analysis supporting Bower, Go, Maven, and javascript includes, please try https://git.legal.
 
 ## Installation
 
