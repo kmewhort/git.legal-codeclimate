@@ -3,6 +3,7 @@ class Service::ScanProject < ::MicroService
   GEMFILE_PATH = 'Gemfile'
   GEMSPEC_PATH = '*.gemspec'
   YARN_LOCKFILE_PATH = 'yarn.lock'
+  NPM_PACKAGE_JSON_PATH = 'package.json'
 
    def call
      if file_found? GEM_LOCKFILE_PATH
@@ -15,6 +16,10 @@ class Service::ScanProject < ::MicroService
 
      if file_found? YARN_LOCKFILE_PATH
        Service::YarnLockfile::Scan.call(file_path: File.join(root, YARN_LOCKFILE_PATH))
+     end
+
+     if file_found? NPM_PACKAGE_JSON_PATH
+       Service::NpmPackageJson::Scan.call(file_path: File.join(root, NPM_PACKAGE_JSON_PATH))
      end
    end
 
