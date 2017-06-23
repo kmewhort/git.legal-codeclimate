@@ -26,14 +26,16 @@ class Service::CodeClimate::ReportIssue < ::MicroService
       "check_name": "Compatibility/Non-compliant license",
       "description": "Library `#{library_name}` is licensed under #{
         license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
-      }: `#{license_names.to_sentence}`"
+      }: `#{license_names.to_sentence}`",
+      "content": content
     })
   end
 
   def license_unrecognized_data
     base_data.merge({
       "check_name": "Compatibility/Unrecognized license",
-      "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`"
+      "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`",
+      "content": content
     })
   end
 
@@ -79,7 +81,6 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   end
 
   def content
-    # TODO
-    nil
+    ERB.new(Rails.root.join('app','views','license_declarations.md.erb')).result(binding)
   end
 end
