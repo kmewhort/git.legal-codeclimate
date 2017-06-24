@@ -2,13 +2,29 @@ require 'rails_helper'
 
 describe Service::CodeClimate::ReportIssue do
   let(:library) { create(:gem_library) }
+  let!(:license) { create(:license, library: library) }
+  subject {
+    capture_stdout { Service::CodeClimate::ReportIssue.call(
+      issue: :non_compliant,
+      library: library,
+      file: 'Gemfile.lock',
+      line_number: 1 )
+    }.gsub(/\0$/, '')
+  }
 
-  subject { Service::CodeClimate::ReportIssue.call(issue: :non_compliant, library: library, file: 'Gemfile.lock', line_number: 1 ) }
   describe "Library with non-compliant license" do
     it "reports the library with valid JSON output" do
-      result = capture_stdout { subject }
-      expect {JSON.parse(result) }.not_to raise_exception
-      expect(JSON.parse(result)["check_name"]).to eq "Compatibility/Non-compliant license"
+      expect {JSON.parse(subject) }.not_to raise_exception
+      expect(JSON.parse(subject)["check_name"]).to eq "Compatibility/Non-compliant license"
+    end
+
+    it "renders a valid markdown document (NOTE: requires manual verification)" do
+      # all strings are valid in markdown format, so best we can do is write to a test file for manual
+      # venification
+      content_markdown = JSON.parse(subject)['content']
+      tempfile = Rails.root.join('tmp', 'markdown-content-test.md')
+      IO.write tempfile, content_markdown
+      puts "*** Markdown written to #{tempfile} for manual verification ***"
     end
   end
 end

@@ -1,32 +1,29 @@
 # <%= library.name %>
 
-The library `<%= library.name %>` declares `<%= pluralize(library.license_types.count, 'licenses') %>`, as shown below.
-
+The library `<%= library.name %>` contains <%= library.licenses.count.to_s %> license <%= "declaration".pluralize(library.licenses.count) %>, as outlined below.
 <% library.licenses.group_by(&:license_type).each do |license_type, licenses| %>
-## *<%= license_type.full_title %>* Declarations
-  <% licenses.each do |license| %>
-    - <%= case license.referencer_type
-           when 'gem_spec'
-            'Library\'s own gemfile specification'
-          when 'npmfile'
-            'Library\'s own NPM specification (package.json)'
-          when 'bowerfile'
-            'Library\'s own Bowerfile specification (bower.json)'
-          when 'dot_txt'
-            "Library's license text file: #{license.referencer_id}"
-          when 'remote_dot_txt'
-            "Library's remotely-referenced license text file #{license.referencer_id}"
-          when 'readme_mention'
-            "Mention in the library's readme file: #{license.referencer_id}"
-          when 'readme_section'
-            "Full license text within the library's readme file: #{license.referencer_id}"
-          when 'comment_mention'
-            "Comments in the library's source code: #{license.referencer_id}"
-          else
-            raise "Unknown declaration type for library #{library.name}"
-          end
-      %>
-   <% end %>
-
+## <%= license_type.full_title %><%= license_type.confirmed? ? '' : ' *(unrecognized)*' %>
+<% licenses.each do |license| %>
+- <%= case license.referencer_type
+      when 'gem_spec'
+        'Specified in the library\'s own gemfile'
+      when 'npmfile'
+        'Specifiecd in the library\'s own NPM manifest (package.json)'
+      when 'bowerfile'
+        'Specified in the library\'s own Bowerfile manifest (bower.json)'
+      when 'dot_txt'
+        "Set out by the library in a license text file: `#{license.referencer_id}`"
+      when 'remote_dot_txt'
+        "Set out by the library in a remotely-referenced license text file `#{license.referencer_id}`"
+      when 'readme_mention'
+        "Mentioned in the library's readme file: `#{license.referencer_id}`"
+      when 'readme_section'
+        "Set out within the library's readme file: `#{license.referencer_id}`"
+      when 'comment_mention'
+        "Mentioned in comments in the library's source code: `#{license.referencer_id}`"
+      else
+        raise "Unknown declaration type for library #{library.name}"
+      end %>
+<% end %>
 <% end %>
 

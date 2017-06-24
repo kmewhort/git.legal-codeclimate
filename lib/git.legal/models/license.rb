@@ -39,5 +39,5 @@ class License < ActiveRecord::Base
                     path: Rails.configuration.private_paperclip_path
   do_not_validate_attachment_file_type :text
 
-  validates_presence_of :license_type, unless: :temporary
+  validates_presence_of :license_type
 end
