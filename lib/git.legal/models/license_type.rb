@@ -147,6 +147,8 @@ class LicenseType < ActiveRecord::Base
   end
 
   def generate_searchable_identifiers
+    return nil if self.identifiers.nil?
+
     # include the identifiers and the title (all of them stripped)
     self.searchable_identifiers = self.identifiers + [self.title]
     self.searchable_identifiers = self.searchable_identifiers.map { |ident| Service::LicenseTypes::StripIdentifier.call(identifier: ident) }

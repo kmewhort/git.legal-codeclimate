@@ -3,6 +3,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require 'spec_helper'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
+require File.expand_path('../support/io_capture.rb', __FILE__)
 #require File.expand_path('../../app/services/service/ser')
 # Add additional requires below this line. Rails is not loaded until this point!
 

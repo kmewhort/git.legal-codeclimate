@@ -28,6 +28,7 @@ class Library < ActiveRecord::Base
                           join_table: 'library_dependents',
                           foreign_key: 'parent_library_id',
                           association_foreign_key: 'child_library_id'
+  has_many :license_types, through: :licenses
   # flag to force library to be refreshed even if not dirty
   attr_accessor :force_refresh
 
