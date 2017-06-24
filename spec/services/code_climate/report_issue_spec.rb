@@ -21,7 +21,7 @@ describe Service::CodeClimate::ReportIssue do
     it "renders a valid markdown document (NOTE: requires manual verification)" do
       # all strings are valid in markdown format, so best we can do is write to a test file for manual
       # venification
-      content_markdown = JSON.parse(subject)['content']
+      content_markdown = JSON.parse(subject)['content']['body']
       tempfile = Rails.root.join('tmp', 'markdown-content-test.md')
       IO.write tempfile, content_markdown
       puts "*** Markdown written to #{tempfile} for manual verification ***"

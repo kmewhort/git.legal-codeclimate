@@ -82,6 +82,10 @@ class Service::CodeClimate::ReportIssue < ::MicroService
 
   def content
     declarations_view = IO.read Rails.root.join('app','views','license_declarations.md.erb')
-    ERB.new(declarations_view).result(binding)
+    markdown = ERB.new(declarations_view).result(binding)
+
+    {
+      body: markdown
+    }
   end
 end
