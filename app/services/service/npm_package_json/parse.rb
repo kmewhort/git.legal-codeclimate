@@ -14,7 +14,7 @@ class Service::NpmPackageJson::Parse < ::MicroService
   private
   def library_data
     data = JSON.parse file_contents
-    return nil unless data.has_key? 'dependencies'
+    return [] unless data.has_key? 'dependencies'
     data['dependencies']
   end
 

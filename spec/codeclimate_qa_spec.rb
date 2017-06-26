@@ -3,23 +3,30 @@ require 'spec_helper'
 describe 'Codeclimate QA' do
   let(:tmp_download_dir) { Dir.mktmpdir }
 
-  describe 'Popular ruby repos' do
-    # top ten Github ruby repos, by stars, based on the following query (with non-ruby repos then discarded):
-    # https://github.com/search?l=Ruby&o=desc&q=stars:>1&ref=searchresults&s=stars&type=Repositories&utf8=✓
-    top_ten = %w(
-      rails/rails
-      jekyll/jekyll
-      discourse/discourse
-      gitlabhq/gitlabhq
-      plataformatec/devise
-      fastlane/fastlane
-      huginn/huginn
-      mitchellh/vagrant
-      Thibaut/devdocs
-      jondot/awesome-react-native
-    )
+  describe 'Popular repos' do
+    repos = [
+      # top ten Github ruby repos, by stars, based on the following query (with non-ruby repos then discarded):
+      # https://github.com/search?l=Ruby&o=desc&q=stars:>1&ref=searchresults&s=stars&type=Repositories&utf8=✓
+      'rails/rails',
+      'jekyll/jekyll',
+      'discourse/discourse',
+      'gitlabhq/gitlabhq',
+      'plataformatec/devise',
+      'fastlane/fastlane',
+      'huginn/huginn',
+      'mitchellh/vagrant',
+      'Thibaut/devdocs',
+      'jondot/awesome-react-native',
 
-    top_ten.each do |repo_name|
+      # js/npm - https://github.com/search?l=JavaScript&o=desc&q=stars:>1&ref=searchresults&s=stars&type=Repositories&utf8=✓
+      'freeCodeCamp/freeCodeCamp',
+      'twbs/bootstrap',
+      'facebook/react',
+      'd3/d3',
+      'vuejs/vue'
+    ]
+
+    repos.each do |repo_name|
       describe repo_name do
         before do
           git_url = "git@github.com:#{repo_name}"
