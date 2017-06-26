@@ -5,7 +5,7 @@ based on policies that you configure.
 
 ## Supported languages and package managers
 
-The community edition of Git.legal currently supports analysis of Ruby (gem) libraries and JS (npm, yarn) libraries  - but expect wider support soon!  For analysis supporting Bower, Go, Maven, and javascript includes, please try https://git.legal.
+The community edition of Git.legal currently supports analysis of Ruby libraries (`Gemfile`, `Gemfile.lock`, `.gemspec`) and JS libraries (npm's `package.json`, `yarn.lock`) libraries  - but expect wider support soon!  For analysis supporting Bower, Go, Maven, and javascript includes, please try https://git.legal.
 
 ## Installation
 
@@ -19,9 +19,7 @@ The community edition of Git.legal currently supports analysis of Ruby (gem) lib
     enabled: true
 ```
 
-3. Ensure that your `Gemfile.lock` is checked into source control.
-
-4. Run an analysis on CodeClimate!
+3. Run an analysis on CodeClimate!
 
 ## License Policy Configuration
 
