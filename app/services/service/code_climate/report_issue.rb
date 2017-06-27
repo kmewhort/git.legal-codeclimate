@@ -27,7 +27,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
       "description": "Library `#{library_name}` is licensed under #{
         license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
       }: `#{license_names.to_sentence}`",
-      #"content": content
+      "content": content
     })
   end
 
@@ -35,7 +35,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
     base_data.merge({
       "check_name": "Compatibility/Unrecognized license",
       "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`",
-      #"content": content
+      "content": content
     })
   end
 
