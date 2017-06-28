@@ -8,7 +8,7 @@ The library `<%= library.name %>` contains <%= library.licenses.count.to_s %> li
       when 'gem_spec'
         'Specified in the library\'s own gemfile'
       when 'npmfile'
-        'Specifiecd in the library\'s own NPM manifest (package.json)'
+        'Specified in the library\'s own NPM manifest (package.json)'
       when 'bowerfile'
         'Specified in the library\'s own Bowerfile manifest (bower.json)'
       when 'dot_txt'
@@ -22,7 +22,7 @@ The library `<%= library.name %>` contains <%= library.licenses.count.to_s %> li
       when 'comment_mention'
         "Mentioned in comments in the library's source code: `#{license.referencer_id}`"
       else
-        raise "Unknown declaration type for library #{library.name}"
+        "Specified in the library's `#{license.referencer_type}`"
       end %>
 <% end %>
 <% end %>
