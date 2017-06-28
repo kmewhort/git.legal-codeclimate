@@ -5,6 +5,8 @@ class Service::ScanProject < ::MicroService
   YARN_LOCKFILE_PATH = 'yarn.lock'
   NPM_PACKAGE_JSON_PATH = 'package.json'
   PYTHON_REQUIREMENTS_PATH = 'requirements.txt'
+  PHP_COMPOSER_JSON_PATH = 'composer.json'
+  PHP_COMPOSER_LOCK_PATH = 'composer.lock'
 
    def call
      if file_found? GEM_LOCKFILE_PATH
@@ -25,6 +27,12 @@ class Service::ScanProject < ::MicroService
 
      if file_found? PYTHON_REQUIREMENTS_PATH
        Service::PythonRequirementsTxt::Scan.call(file_path: File.join(root, PYTHON_REQUIREMENTS_PATH))
+     end
+
+     if file_found? PHP_COMPOSER_LOCK_PATH
+       Service::PhpComposerLock::Scan.call(file_path: File.join(root, PHP_COMPOSER_LOCK_PATH))
+     elsif file_found? PHP_COMPOSER_JSON_PATH
+       Service::PhpComposerJson::Scan.call(file_path: File.join(root, PHP_COMPOSER_JSON_PATH))
      end
    end
 

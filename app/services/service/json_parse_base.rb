@@ -6,7 +6,7 @@ class Service::JsonParseBase < ::MicroService
       {
         name: lib_name,
         version: nil, # don't currently handle fuzzy dependency version numbers
-        line: find_line_number(lib_name),
+        line: find_line_starting_with_key(lib_name),
       }
     end
   end
@@ -22,7 +22,7 @@ class Service::JsonParseBase < ::MicroService
     data[dependency_json_key]
   end
 
-  def find_line_number(library_name)
+  def find_line_starting_with_key(library_name)
     line_number = file_contents.each_line.find_index do |line_iter|
       line_iter.gsub(/^\s*[\"\']/, '').start_with? library_name
     end

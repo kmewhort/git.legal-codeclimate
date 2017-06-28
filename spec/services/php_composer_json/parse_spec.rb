@@ -5,12 +5,12 @@ describe Service::PhpComposerJson::Parse do
   let(:file_contents) { IO.read(package_json_path) }
   subject { Service::PhpComposerJson::Parse.call(file_contents: file_contents) }
 
-  it "finds the libraries listed in the package.json" do
-    expect(subject.count).to eq 11
+  it "finds the libraries listed in the composer.json" do
+    expect(subject.count).to eq 7
   end
 
   it "finds the line number where a gem is reported" do
-    expect(subject[7][:name]).to eq 'bower-asset/jquery'
-    expect(subject[7][:line]).to eq 78
+    expect(subject[3][:name]).to eq 'bower-asset/jquery'
+    expect(subject[3][:line]).to eq 78
   end
 end
