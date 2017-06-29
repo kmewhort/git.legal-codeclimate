@@ -18,6 +18,14 @@ test_npm:
   <<: *default
   database: db/test_npm.sqlite3
 
+test_pypi:
+  <<: *default
+  database: db/test_pypi.sqlite3
+
+test_packagist:
+  <<: *default
+  database: db/test_packagist.sqlite3
+
 production:
   <<: *default
   # default to the rubygems db for the production environment
@@ -28,6 +36,14 @@ production_rubygems:
   database: db/production_rubygems.sqlite3
 
 production_npm:
+  <<: *default
+  database: db/production_npm.sqlite3
+
+production_pypi:
+  <<: *default
+  database: db/production_pypi.sqlite3
+
+production_packagist:
   <<: *default
   database: db/production_npm.sqlite3
 

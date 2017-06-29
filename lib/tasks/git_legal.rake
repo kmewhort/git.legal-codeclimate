@@ -24,6 +24,11 @@ namespace :git_legal do
     source_db = args[:from_db] or raise 'Please specify the source and target databases'
     target_db = args[:to_db] or raise 'Please specify the source and target databases'
 
+    # reset the db
+    ActiveRecord::Tasks::DatabaseTasks.drop(ActiveRecord::Base.configurations[target_db])
+    ActiveRecord::Base.establish_connection target_db.to_sym
+    ActiveRecord::Migrator.migrate('db/migrate')
+
     # this task runs for a long time...and somehow seems to get SIGHUP even with nohup?! ...so ignore.
     Signal.trap('HUP') do
       # no-op

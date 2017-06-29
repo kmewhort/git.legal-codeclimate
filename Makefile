@@ -13,4 +13,7 @@ run_on_self_html: image
 production_db:
 	bundle exec rake git_legal:refresh_db[rubygems_license_db,git_legal_production,production_rubygems]
 	bundle exec rake git_legal:refresh_db[npm_license_db,git_legal_production,production_npm]
+	bundle exec rake git_legal:refresh_db[pypi_license_db,git_legal_production,production_pypi]
+	bundle exec rake git_legal:refresh_db[packagist_license_db,git_legal_production,production_packagist]
+
 
