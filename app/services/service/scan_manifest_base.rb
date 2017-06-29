@@ -1,16 +1,19 @@
 class Service::ScanManifestBase < ::MicroService
   attribute :file_path
   attribute :follow_dependencies, Boolean, default: false
+  attribute :version_must_match, Boolean, default: false
 
   def call
     library_identifiers.each do |lib_info|
       library = Service::FindLibrary.call(
         name: lib_info[:name],
         version: lib_info[:version],
-        type: library_class
+        type: library_class,
+        version_must_match: version_must_match
       )
 
       if library.blank?
+        puts "---#{lib_info[:name]}"
         report_library_not_found(lib_info[:name], lib_info[:version], lib_info[:line])
       else
         analyze_library(library, lib_info[:line])
@@ -23,8 +26,7 @@ class Service::ScanManifestBase < ::MicroService
     Service::AnalyzeLibrary.call(
       library: library,
       file: file_basename,
-      line_number: line_number,
-      version_must_match: false
+      line_number: line_number
     )
 
     already_scanned_libraries[library.id] = true

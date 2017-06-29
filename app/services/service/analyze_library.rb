@@ -2,7 +2,6 @@ class Service::AnalyzeLibrary < ::MicroService
   attribute :library
   attribute :file
   attribute :line_number
-  attribute :version_must_match, Boolean, default: true
 
   def call
     if library.licenses.blank?

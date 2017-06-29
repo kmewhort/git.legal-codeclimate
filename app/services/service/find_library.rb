@@ -2,7 +2,7 @@ class Service::FindLibrary < ::MicroService
   attribute :name
   attribute :version
   attribute :type
-  attribute :version_must_match, Boolean, default: true
+  attribute :version_must_match, Boolean, default: false
 
   def call
     if version_must_match && !version.blank?
