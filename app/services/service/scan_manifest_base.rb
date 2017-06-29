@@ -13,7 +13,6 @@ class Service::ScanManifestBase < ::MicroService
       )
 
       if library.blank?
-        puts "---#{lib_info[:name]}"
         report_library_not_found(lib_info[:name], lib_info[:version], lib_info[:line])
       else
         analyze_library(library, lib_info[:line])
