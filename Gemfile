@@ -14,6 +14,9 @@ gem 'sqlite3'
 # parsers
 gem 'gemnasium-parser'
 
+# product licensing
+gem 'gitlab-license'
+
 group :development, :test do
 end
 

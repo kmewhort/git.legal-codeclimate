@@ -59,6 +59,7 @@ GEM
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
     gemnasium-parser (0.1.9)
+    gitlab-license (1.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     i18n (0.8.1)
@@ -157,6 +158,7 @@ DEPENDENCIES
   database_cleaner
   factory_girl_rails
   gemnasium-parser
+  gitlab-license
   paperclip
   pg (~> 0.15)
   rails (= 4.2.8)

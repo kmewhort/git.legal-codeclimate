@@ -28,19 +28,46 @@ The community edition of Git.legal currently supports dependency analysis of:
 ## License Policy Configuration
 
 You can add a configurations section to your `.codeclimate.yml` to set which types of licenses you wish to allow and
-disallow for your project.  For example, the example below (which is the default setting), is a typical policy to only
-exclude "strong copyleft" and Affero licenses:
+disallow for your project.  For instance, the example below (which is the default setting), is a typical policy to only
+exclude "strong copyleft" and Affero licenses (permissive and weak copyleft are permitted):
 
 ```
  git-legal:
     enabled: true
     config:
+      # eg. Affero GPL
       allow_affero_copyleft:   false
+      # eg. GPL
       allow_strong_copyleft:   false
-      allow_weak_copyleft:     false
-      allow_permissive:        true
-      allow_unknown_libraries: true
 ```
+
+If you subscribe to Git.legal Pro, further configuration options are available to you to customize the policy to your 
+exact business needs - see below!
+
+## Git.legal Pro
+
+If you subscribe to a Pro account, include your product key in the configuration to:
+  1. Customize your configuration to exactly align to your company's license policy; and
+  2. View detailed information on each library and license, including viewing the actual license for a library and seeing a word-by-word diff to the standard license.
+
+```
+ git-legal:
+    enabled: true
+    config:
+      license_key: <your license key>
+      # eg. LGPL, MPL
+      allow_weak_copyleft:     false
+      # eg. MIT, BSD - you'll generally only want to set this to false if you want to explicitly approve ALL libraries
+      allow_permissive:        true
+      # licenses to permit (overriding the above general policies); standard license names and abbreviations (with or
+      # without version numbers) are all recognized
+      license_whitelist:       []
+      # licenses to blacklist (overriding the above general policies)
+      license_blacklist:       []
+      # by default, libraries not found in standard library repositories (rubygems.org, npm, etc) are permitted
+      # (as they're likely your own works), but you may wish to play it safe and explicitly approve these
+      allow_unknown_libraries: true
+```      
 
 ## Building from Source
 
