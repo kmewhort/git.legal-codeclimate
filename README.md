@@ -5,7 +5,11 @@ based on policies that you configure.
 
 ## Supported languages and package managers
 
-The community edition of Git.legal currently supports analysis of Ruby libraries (`Gemfile`, `Gemfile.lock`, `.gemspec`) and JS libraries (npm's `package.json`, `yarn.lock`) libraries  - but expect wider support soon!  For analysis supporting Bower, Go, Maven, and javascript includes, please try https://git.legal.
+The community edition of Git.legal currently supports dependency analysis of:
+- Ruby libraries (via a `Gemfile`, `Gemfile.lock`, or `.gemspec`);
+- JS libraries (via npm's `package.json`, or `yarn.lock`);
+- Python libraries (via `requirements.txt`); and
+- PHP libraries (via `composer.json`)
 
 ## Installation
 

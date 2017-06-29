@@ -5,7 +5,7 @@
     "name": "Kent Mewhort",
     "email": "kent@git.legal"
   },
-  "languages" : ["Ruby","JavaScript"],
+  "languages" : ["Ruby","JavaScript", "PHP", "Python"],
   "version": "1.0",
   "spec_version": "0.0.1"
 }
