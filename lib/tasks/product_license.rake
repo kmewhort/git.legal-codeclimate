@@ -5,8 +5,8 @@ namespace :product_license do
     raise "Customer email not supplied" if args[:customer_email].blank?
     raise "Expiry date (YYYY-MM-DD) not supplied" if args[:expiry_date].blank?
 
-    private_license_dir =  Rails.root.join('..', 'git.legal_ops')
-    private_key_path = private_license_dir.join('git.legal-codeclimate-product-key')
+    private_license_dir =  Rails.root.join('..', 'git.legal_ops', 'product_licenses')
+    private_key_path = private_license_dir.join('product-private-key')
     raise "Private product key not found at #{private_key_path}" unless File.exist? private_key_path
 
     # Build a new license.
@@ -51,8 +51,8 @@ namespace :product_license do
     puts "Exported license:"
     puts data
 
-    # Write the license to a file to send to a customer.
-    license_path = private_license_dir.join("#{args[:customer_email]}-#{args[:expiry_date]}")
+    # Write the license to a file to send to a customer
+    license_path = private_license_dir.join(".git-legal_#{args[:customer_email]}_#{args[:expiry_date]}.license")
     File.open(license_path, "w") { |f| f.write(data) }
   end
 end

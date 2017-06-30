@@ -46,7 +46,7 @@ exact business needs - see below!
 
 ## Git.legal Pro
 
-If you subscribe to a Pro account, include your product key in the configuration to:
+Subscribe to a Pro account (and include your license file in your project root directory) in order to:
   1. Customize your configuration to exactly align to your company's license policy; and
   2. View detailed information on each library and license, including viewing the actual license for a library and seeing a word-by-word diff to the standard license.
 
@@ -54,7 +54,6 @@ If you subscribe to a Pro account, include your product key in the configuration
  git-legal:
     enabled: true
     config:
-      license_key: <your license key>
       # eg. LGPL, MPL
       allow_weak_copyleft:     false
       # eg. MIT, BSD - you'll generally only want to set this to false if you want to explicitly approve ALL libraries

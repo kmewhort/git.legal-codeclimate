@@ -18,13 +18,25 @@ describe Service::CodeClimate::ReportIssue do
       expect(JSON.parse(subject)["check_name"]).to eq "Compatibility/Non-compliant license"
     end
 
-    it "renders a valid markdown document (NOTE: requires manual verification)" do
-      # all strings are valid in markdown format, so best we can do is write to a test file for manual
-      # venification
-      content_markdown = JSON.parse(subject)['content']['body']
-      tempfile = Rails.root.join('tmp', 'markdown-content-test.md')
-      IO.write tempfile, content_markdown
-      puts "*** Markdown written to #{tempfile} for manual verification ***"
+    context "no license" do
+      it "does not output a detailed content body" do
+        expect(JSON.parse(subject)['content']).to be nil
+      end
+    end
+
+    context "pro license" do
+      before do
+        allow(Service::LoadProductLicense).to receive(:call).and_return(double('expired?' => false))
+      end
+
+      it "renders a valid markdown document (NOTE: requires manual verification)" do
+        # all strings are valid in markdown format, so best we can do is write to a test file for manual
+        # venification
+        content_markdown = JSON.parse(subject)['content']['body']
+        tempfile = Rails.root.join('tmp', 'markdown-content-test.md')
+        IO.write tempfile, content_markdown
+        puts "*** Markdown written to #{tempfile} for manual verification ***"
+      end
     end
   end
 end

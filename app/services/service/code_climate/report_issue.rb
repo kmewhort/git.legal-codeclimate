@@ -5,7 +5,7 @@ class Service::CodeClimate::ReportIssue < ::MicroService
   attribute :line_number
 
   def call
-    data = case issue
+    @data = case issue
       when :non_compliant
         non_compliant_data
       when :library_not_found
@@ -18,24 +18,27 @@ class Service::CodeClimate::ReportIssue < ::MicroService
         raise "Unknown issue type"
     end
 
-    puts "#{data.to_json}\0"
+    show_license_expired_message if product_license.try(:expired?)
+
+    show_detailed_content if product_license && !product_license.expired?
+
+    puts "#{@data.to_json}\0"
   end
 
+  private
   def non_compliant_data
     base_data.merge({
       "check_name": "Compatibility/Non-compliant license",
       "description": "Library `#{library_name}` is licensed under #{
         license_names.count == 1 ? 'a non-compliant license' : 'non-compliant licenses'
-      }: `#{license_names.to_sentence}`",
-      "content": content
+      }: `#{license_names.to_sentence}`"
     })
   end
 
   def license_unrecognized_data
     base_data.merge({
       "check_name": "Compatibility/Unrecognized license",
-      "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`",
-      "content": content
+      "description": "Library `#{library_name}` contains unrecogonized licenses: `#{license_names.to_sentence}`"
     })
   end
 
@@ -87,5 +90,19 @@ class Service::CodeClimate::ReportIssue < ::MicroService
     {
       body: markdown
     }
+  end
+
+  def show_license_expired_message
+    @data[:description] = 'Your Git.legal Pro license has expired.  Please visit our website at https://git.legal to contact the product team and renew the product.'
+  end
+
+  def show_detailed_content
+    if issue.in? [:non_compliant, :license_unrecognized]
+      @data[:content] = content
+    end
+  end
+
+  def product_license
+    @product_license ||= Service::LoadProductLicense.call
   end
 end

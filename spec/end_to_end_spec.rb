@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'End to end' do
   # docker can't connect to /var/folders/... on OSX, so use the project tmpdir
@@ -18,6 +18,13 @@ describe 'End to end' do
   def reported_issue_for(library_name)
     # we always report the library in the description, so search on that
     subject.find {|issue| issue['description'] =~ /#{library_name}/}
+  end
+
+  def load_product_key(target_path)
+    dev_key = Rails.root.join('..','git.legal_ops','product_licenses','.git-legal_development-only@git.legal_2200-01-01.license')
+    raise "You need to setup a Pro version product key for this test" unless File.exist? dev_key
+
+    FileUtils.cp dev_key, target_path
   end
 
   context "default config" do
@@ -47,6 +54,8 @@ describe 'End to end' do
 
   context "config file prohibits weak copyleft" do
     before do
+      load_product_key tmp_code_dir
+
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
         engines:
@@ -64,6 +73,8 @@ describe 'End to end' do
 
   context "config file prohibits unknown libraries" do
     before do
+      load_product_key tmp_code_dir
+
       IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
         ---
         engines:
