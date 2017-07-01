@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527191231) do
+ActiveRecord::Schema.define(version: 20170701051245) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "project_id"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 20170527191231) do
     t.string "parent_library_id"
     t.string "child_library_id"
   end
+
+  create_table "license_type_policies", force: :cascade do |t|
+    t.integer "policy_id"
+    t.integer "license_type_id"
+    t.string  "treatment"
+  end
+
+  add_index "license_type_policies", ["license_type_id"], name: "index_license_type_policies_on_license_type_id"
+  add_index "license_type_policies", ["policy_id"], name: "index_license_type_policies_on_policy_id"
 
   create_table "license_types", force: :cascade do |t|
     t.string   "title"
