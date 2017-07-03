@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'Codeclimate QA' do
+  before { skip unless ENV['INCLUDE_MANUAL_VERIFICATION_TESTS'] }
+
   let(:tmp_download_dir) { Dir.mktmpdir }
 
   describe 'Popular repos' do

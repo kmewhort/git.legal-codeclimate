@@ -21,11 +21,12 @@ class Policy < ActiveRecord::Base
   has_many :license_types, through: :license_type_policies
 
   def whitelist
-    license_types.where('license_type_policies.treatment = ?', :whitelist)
+    # use a select so we filter on license type policies not yet saved
+    license_type_policies.select {|p| p.treatment == 'whitelist'}.map(&:license_type)
   end
 
   def blacklist
-    license_types.where('license_type_policies.treatment = ?', :blacklist)
+    license_type_policies.select {|p| p.treatment == 'blacklist'}.map(&:license_type)
   end
 
   def add_to_whitelist(license_type)
@@ -38,7 +39,8 @@ class Policy < ActiveRecord::Base
 
   private
   def add_to_list(treatment, license_type)
-    license_type_policies.create!(
+    self.license_type_policies << LicenseTypePolicy.new(
+      policy: self,
       license_type: license_type,
       treatment: treatment
     )

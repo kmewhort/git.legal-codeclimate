@@ -69,6 +69,60 @@ describe 'End to end' do
     it "report issues for weak copyleft licenses" do
       expect(reported_issue_for('origami')['check_name']).to eq 'Compatibility/Non-compliant license'
     end
+
+    context "LGPL whitelisted" do
+      before do
+        IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
+        ---
+        engines:
+          git-legal:
+            enabled: true
+            config:
+              allow_weak_copyleft: false
+              license_whitelist: ['LGPL']
+        YML
+      end
+
+      it "reports no issues for LGPL-3 libraries" do
+        expect(reported_issue_for('origami')).to be nil
+      end
+    end
+
+    context "LGPL-2 whitelisted" do
+      before do
+        IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
+        ---
+        engines:
+          git-legal:
+            enabled: true
+            config:
+              allow_weak_copyleft: false
+              license_whitelist: ['LGPL-2']
+        YML
+      end
+
+      it "still reports an issues for LGPL-3 libraries" do
+        expect(reported_issue_for('origami')['check_name']).to eq 'Compatibility/Non-compliant license'
+      end
+    end
+
+    context "LGPL-3 whitelisted" do
+      before do
+        IO.write "#{tmp_code_dir}/.codeclimate.yml", <<~YML
+        ---
+        engines:
+          git-legal:
+            enabled: true
+            config:
+              allow_weak_copyleft: false
+              license_whitelist: ['LGPL-3']
+        YML
+      end
+
+      it "reports no issues for LGPL-3 libraries" do
+        expect(reported_issue_for('origami')).to be nil
+      end
+    end
   end
 
   context "config file prohibits unknown libraries" do
