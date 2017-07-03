@@ -65,6 +65,16 @@ class LicenseType < ActiveRecord::Base
   MAINTAINER_TYPES = %w(gov ngo private)
   validates :maintainer_type, inclusion: MAINTAINER_TYPES, allow_nil: true
 
+  # sqllite doesn't support ANY, so need to search in a bit of a roundable way on the YML serialized identifiers
+  def self.find_by_searchable_identifier(identifier)
+    self.where("searchable_identifiers LIKE ?", "%- #{identifier}\n%")
+  end
+
+  def self.find_by_searchable_identifiers(identifiers)
+    ids = identifiers.map {|identifier| self.find_by_searchable_identifier(identifier).pluck(:id)}.flatten.uniq
+    self.where(id: ids)
+  end
+
   # full title w/ licence version identifier
   def full_title
     return title if version.nil?
