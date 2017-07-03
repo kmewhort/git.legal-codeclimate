@@ -45,7 +45,7 @@ production_pypi:
 
 production_packagist:
   <<: *default
-  database: db/production_npm.sqlite3
+  database: db/production_packagist.sqlite3
 
 # git.legal core databases
 git_legal_development:
