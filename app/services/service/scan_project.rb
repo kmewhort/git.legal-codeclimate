@@ -32,7 +32,7 @@ class Service::ScanProject < ::MicroService
      if file_found? PHP_COMPOSER_LOCK_PATH
        Service::PhpComposerLock::Scan.call(file_path: File.join(root, PHP_COMPOSER_LOCK_PATH))
      elsif file_found? PHP_COMPOSER_JSON_PATH
-       #Service::PhpComposerJson::Scan.call(file_path: File.join(root, PHP_COMPOSER_JSON_PATH))
+       Service::PhpComposerJson::Scan.call(file_path: File.join(root, PHP_COMPOSER_JSON_PATH))
      end
    end
 

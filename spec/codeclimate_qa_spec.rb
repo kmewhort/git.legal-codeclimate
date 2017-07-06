@@ -37,8 +37,16 @@ describe 'Codeclimate QA' do
         'requests/requests',
         'ansible/ansible:devel',
         'scrapy/scrapy'
-      ]
+      ],
 
+      # php - https://github.com/search?l=PHP&o=desc&q=stars:>1&ref=searchresults&s=stars&type=Repositories&utf8=✓
+      php: [
+        'laravel/laravel',
+        'symfony/symfony',
+        'bcit-ci/CodeIgniter',
+        'domnikl/DesignPatternsPHP',
+        'fzaninotto/Faker'
+      ]
     }
 
     repos.each do |type, repos|
