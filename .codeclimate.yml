@@ -26,7 +26,6 @@ engines:
     enabled: true
   git-legal:
     enabled: true
-    channel: beta
 ratings:
   paths:
   - Gemfile.lock
